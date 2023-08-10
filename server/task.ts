@@ -156,22 +156,4 @@ export class TaskService {
 
     return { success: true };
   }
-
-  /**
-   * Method that deletes a task for a giving user ID.
-   * Only authenticated users with a valid token can access this method.
-   *
-   * The method will be exported via SDK using genezio.
-   *
-   * @param {*} token The user's token.
-   * @param {*} id The task's id.
-   * @returns An object containing one property: { success: true }
-   */
-  async deleteTask(token: string, id: string):Promise<DeleteTaskResponse> {
-    console.log(`Delete task with id ${id} request received`)
-
-    await TaskModel.deleteOne({ token: token, _id: id });
-
-    return { success: true };
-  }
 }
