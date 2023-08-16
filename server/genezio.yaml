@@ -1,5 +1,5 @@
 name: getting-started-genezio-typescript
-region: eu-central-1
+region: us-east-1
 cloudProvider: genezio
 sdk:
   language: ts
@@ -9,7 +9,6 @@ scripts:
   preFrontendDeploy: cd ../client && npm install && npm run build
 frontend:
   path: ../client/public
-  subdomain: tan-adverse-lemming
 classes:
   - path: ./task.ts
     type: jsonrpc

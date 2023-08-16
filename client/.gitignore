@@ -1,0 +1,3 @@
+# ignore files that are modified by `npm run build`
+./public/bundle.js
+./public/bundle.js.map

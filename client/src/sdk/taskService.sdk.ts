@@ -5,7 +5,7 @@
 
 import { Remote } from "./remote";
 
-export type Task = {id: string, token: string, title: string, solved: boolean, date: Date};
+export type Task = {id: string, token: string, title: string, url: string, solved: boolean, date: Date};
 export type GetTasksResponse = {success: boolean, tasks: Array<Task>};
 export type GetTaskResponse = {success: boolean, task?: Task};
 export type UpdateTaskResponse = {success: boolean};

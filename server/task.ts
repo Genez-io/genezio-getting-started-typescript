@@ -3,30 +3,31 @@ import { MONGO_DB_URI } from "./helper"
 import { TaskModel } from "./models/task"
 
 export type Task = {
-  id: string,
-  token: string,
-  title: string,
-  solved: boolean,
-  date: Date,
-}
+  id: string;
+  token: string;
+  title: string;
+  url: string;
+  solved: boolean;
+  date: Date;
+};
 
 export type GetTasksResponse = {
-  success: boolean,
-  tasks: Task[]
-}
+  success: boolean;
+  tasks: Task[];
+};
 
 export type GetTaskResponse = {
-  success: boolean,
-  task?: Task
-}
+  success: boolean;
+  task?: Task;
+};
 
 export type UpdateTaskResponse = {
-  success: boolean,
-}
+  success: boolean;
+};
 
 export type DeleteTaskResponse = {
-  success: boolean,
-}
+  success: boolean;
+};
 
 /**
  * The Task server class that will be deployed on the genezio infrastructure.
@@ -40,6 +41,7 @@ export class TaskService {
    * Private method used to connect to the DB.
    */
   #connect() {
+    mongoose.set('strictQuery', false);
     mongoose.connect(MONGO_DB_URI);
   }
 
@@ -53,53 +55,48 @@ export class TaskService {
    * @returns An object containing two properties: { success: true, tasks: tasks }
    */
   async getAllTasksByUser(token: string): Promise<GetTasksResponse> {
-    console.log(`Get all tasks by user request received with token ${token}`)
+    console.log(`Get all tasks by user request received with token ${token}`);
 
     const tasks = (await TaskModel.find({ token: token })).map((task) => {
       return {
         id: task._id.toString(),
         token: task.token,
         title: task.title,
+        url: task.url,
         solved: task.solved,
-        date: task.date
+        date: task.date,
       };
     });
 
     if (tasks.length === 0) {
       await TaskModel.create({
         token: token,
-        title: "Check the other example projects",
-        url: "https://github.com/Genez-io/genezio-examples"
-      })
+        title: 'Check our documentation',
+        url: 'https://genez.io/docs',
+      });
 
       await TaskModel.create({
         token: token,
-        title: "Check our documentation",
-        url: "https://docs.genez.io/genezio-documentation/"
-      })
+        title: 'Read technical articles on the genezio blog',
+        url: 'https://genez.io/blog',
+      });
 
       await TaskModel.create({
         token: token,
-        title: "Watch our Youtube tutorials",
-        url: "https://www.youtube.com/@genezio7235"
-      })
-
-      await TaskModel.create({
-        token: token,
-        title: "Read our technical articles on genezio blog",
-        url: "https://genez.io/blog/"
-      })
+        title: 'Check the other example projects',
+        url: 'https://github.com/genez-io/genezio-examples',
+      });
 
       const initTasks = (await TaskModel.find({ token: token })).map((task) => {
         return {
           id: task._id.toString(),
           token: task.token,
           title: task.title,
+          url: task.url,
           solved: task.solved,
-          date: task.date
-          };
-        });
-
+          date: task.date,
+        };
+      });
 
       return { success: true, tasks: initTasks };
     }
@@ -118,16 +115,26 @@ export class TaskService {
    * @returns An object containing two properties: { success: true, tasks: tasks }
    */
   async createTask(token: string, title: string): Promise<GetTaskResponse> {
-    console.log(`Create task request received for user with ${token} with title ${title}`)
+    console.log(
+      `Create task request received for user with ${token} with title ${title}`,
+    );
 
     const task = await TaskModel.create({
       title: title,
-      token: token
+      url: '',
+      token: token,
     });
 
     return {
       success: true,
-      task: { title: title, token:token, id: task._id.toString(), solved: false, date: new Date() }
+      task: {
+        title: title,
+        url: '',
+        token: token,
+        id: task._id.toString(),
+        solved: false,
+        date: new Date(),
+      },
     };
   }
 
@@ -143,15 +150,22 @@ export class TaskService {
    * @param {*} solved If the task is solved or not.
    * @returns An object containing two properties: { success: true }
    */
-  async updateTask(token: string, id: string, title: string, solved: boolean) : Promise<UpdateTaskResponse>{
-    console.log(`Update task request received with id ${id} with title ${title} and solved value ${solved}`)
+  async updateTask(
+    token: string,
+    id: string,
+    title: string,
+    solved: boolean,
+  ): Promise<UpdateTaskResponse> {
+    console.log(
+      `Update task request received with id ${id} with title ${title} and solved value ${solved}`,
+    );
 
     await TaskModel.updateOne(
       { _id: id, token: token },
       {
         title: title,
-        solved: solved
-      }
+        solved: solved,
+      },
     );
 
     return { success: true };
