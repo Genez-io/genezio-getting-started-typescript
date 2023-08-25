@@ -9,9 +9,10 @@ export type Task = {id: string, token: string, title: string, url: string, solve
 export type GetTasksResponse = {success: boolean, tasks: Array<Task>};
 export type GetTaskResponse = {success: boolean, task?: Task};
 export type UpdateTaskResponse = {success: boolean};
+export type DeleteTaskResponse = {success: boolean};
 
 export class TaskService {
-  static remote = new Remote("http://127.0.0.1:8083/TaskService");
+  static remote = new Remote("https://hv3nrbvb75rgdpw2pocgcunrcm0qoynx.lambda-url.us-east-1.on.aws/TaskService");
 
   static async getAllTasksByUser(token: string): Promise<GetTasksResponse> {
     return await TaskService.remote.call("TaskService.getAllTasksByUser", token);
@@ -21,6 +22,9 @@ export class TaskService {
   }
   static async updateTask(token: string, id: string, title: string, solved: boolean): Promise<UpdateTaskResponse> {
     return await TaskService.remote.call("TaskService.updateTask", token, id, title, solved);
+  }
+  static async deleteTask(token: string, id: string): Promise<DeleteTaskResponse> {
+    return await TaskService.remote.call("TaskService.deleteTask", token, id);
   }
 }
 
