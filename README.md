@@ -28,7 +28,7 @@ Because hands-on experience is the best way to understand a new tool, we are pro
 
 The TODO application is missing a vital feature - a delete functionality.
 
-Follow the comments in the code ([backend](), [frontend]()) to implement it yourself.
+Follow the comments in the code ([backend](https://github.com/Genez-io/genezio-getting-started-typescript/blob/main/server/task.ts#L175), [frontend](https://github.com/Genez-io/genezio-getting-started-typescript/blob/main/client/src/app.ts#L65)) to implement it yourself.
 
 Deploy it with `genezio deploy` and check it out live :D
 
