@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build": "node build.js",
-    "start": "serve public",
+    "start": "node build.js && serve public",
     "install-local-sdk": "npm link @genezio-sdk/getting-started-genezio-typescript_us-east-1",
     "install-prod-sdk": "npm install @genezio-sdk/getting-started-genezio-typescript_us-east-1@1.0.0-prod"
   },
