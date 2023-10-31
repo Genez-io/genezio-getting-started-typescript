@@ -1,0 +1,8 @@
+name: getting-started-genezio-typescript
+region: us-east-1
+language: ts
+packageManager: npm
+cloudProvider: genezio
+workspace:
+  backend: ./server
+  frontend: ./client

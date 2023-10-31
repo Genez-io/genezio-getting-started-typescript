@@ -1,0 +1,6 @@
+scripts:
+  preFrontendDeploy: npm run install-prod-sdk && npm install  && npm run build
+frontend:
+  path: ./public
+  subdomain: lime-competent-raccoon
+packageManager: npm

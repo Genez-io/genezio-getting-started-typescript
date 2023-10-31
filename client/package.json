@@ -4,12 +4,16 @@
   "private": true,
   "scripts": {
     "build": "node build.js",
-    "start": "serve public"
+    "start": "serve public",
+    "install-local-sdk": "npm link @genezio-sdk/genezio-getting-started_us-east-1",
+    "install-prod-sdk": "npm install @genezio-sdk/genezio-getting-started_us-east-1@1.0.0-prod"
   },
   "devDependencies": {
     "serve": "^14.2.0"
   },
   "dependencies": {
+    "@genezio-sdk/genezio-getting-started_us-east-1": "^1.0.0-prod",
+    "@genezio-sdk/getting-started-genezio-typescript_us-east-1": "^1.0.0-prod",
     "esbuild": "^0.19.0"
   }
 }

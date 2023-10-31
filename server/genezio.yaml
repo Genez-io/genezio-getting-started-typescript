@@ -1,16 +1,2 @@
-name: getting-started-genezio-typescript
-region: us-east-1
-cloudProvider: genezio
-sdk:
-  language: ts
-  path: ../client/src/sdk
 scripts:
   preBackendDeploy: npm install
-  preFrontendDeploy: cd ../client && npm install && npm run build
-frontend:
-  path: ../client/public
-  subdomain: awesome-purple-capybara
-classes:
-  - path: ./task.ts
-    type: jsonrpc
-    methods: []
