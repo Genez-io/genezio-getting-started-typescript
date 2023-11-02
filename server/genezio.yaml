@@ -9,6 +9,7 @@ scripts:
   preFrontendDeploy: cd ../client && npm install && npm run build
 frontend:
   path: ../client/public
+  subdomain: awesome-purple-capybara
 classes:
   - path: ./task.ts
     type: jsonrpc

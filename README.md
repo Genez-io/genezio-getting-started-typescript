@@ -6,7 +6,7 @@
 
 </div>
 
-## You can check a [demo getting-started app here](https://silver-squealing-armadillo.app.genez.io).
+## You can check a [demo getting-started app here](https://awesome-purple-capybara.app.genez.io).
 
 This is an example of a TODO application that introduces you to the genezio flow.
 
@@ -18,8 +18,8 @@ The application is built using:
 
 ## Deploy the project yourself
 
-1. Run `git clone https://github.com/Genez-io/genezio-getting-started-javascript`.
-2. Navigate to the folder `cd ./genezio-getting-started-javascript/server`.
+1. Run `git clone https://github.com/Genez-io/genezio-getting-started-typescript`.
+2. Navigate to the folder `cd ./genezio-getting-started-typescript/server`.
 3. Run `genezio deploy` to deploy both the backend and the frontend.
 
 ## Genezio Challenge
