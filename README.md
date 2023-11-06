@@ -19,7 +19,7 @@ The application is built using:
 ## Deploy the project yourself
 
 1. Run `git clone https://github.com/Genez-io/genezio-getting-started-typescript`.
-2. Navigate to the folder `cd ./genezio-getting-started-typescript/server`.
+2. Navigate to the folder `cd ./genezio-getting-started-typescript`.
 3. Run `genezio deploy` to deploy both the backend and the frontend.
 
 ## Genezio Challenge
@@ -46,7 +46,7 @@ Run `npm install` and `npm run build` in the `client/` folder to install the dep
 
 ### Test the example locally
 
-Run `genezio local` in the `server/` folder - this will start a local backend server that you can use to test the backend methods.
+Run `genezio local` in the project's root directory. This will start a local backend server that you can use to test the backend methods.
 ```bash
 $ genezio local
 Server listening on port 8083
@@ -60,9 +60,9 @@ There are two ways of sending requests to the backend methods:
 
 ## Deploy the example in the Genezio infrastructure
 
-1. Run `genezio deploy --backend` in the `server/` folder that contains also the `genezio.yaml` file. This will deploy your code in the Genezio infrastructure and it will also create an SDK that can be used to call the methods remotely.
+1. Run `genezio deploy --backend` in the project's root directory. This will deploy your code in the Genezio infrastructure and it will also create an SDK that can be used to call the methods remotely.
 2. Start the web app by going to the `client/` folder and run `npm start`.
 
 ## Deploy the frontend in Genezio Infrastructure
 1. Run `npm i && npm run build` in the `client` folder to build the web app.
-2. Run `genezio deploy --frontend` in the `server` folder to deploy the frontend in the Genezio infrastructure.
+2. Run `genezio deploy --frontend` in the project's root directory to deploy the frontend in the Genezio infrastructure.

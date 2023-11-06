@@ -24,5 +24,4 @@ jobs:
         with:
           cmd: yq eval -i '.frontend.subdomain = "awesome-purple-capybara"' genezio.yaml
       - name: Deploy
-        working-directory: ./server
         run: genezio deploy
