@@ -1,4 +1,4 @@
-import { TaskService } from "@genezio-sdk/getting-started-genezio-typescript_us-east-1"
+import { TaskService } from '@genezio-sdk/getting-started-genezio-typescript_us-east-1';
 
 const DELETE_ICON = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#DC3545" class="bi bi-trash-fill" viewBox="0 0 16 16">
 <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
@@ -7,39 +7,48 @@ const DELETE_ICON = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="
 // We want to persist the todo lists across page reloads.
 // For this we use the localStorage API.
 // If the user has no token yet, we generate a random one.
-let token: string = localStorage.getItem("apiToken")!;
+let token: string = localStorage.getItem('apiToken')!;
 if (!token) {
-    // generate a random token
-    token =
-        Math.random().toString(36).substring(2, 15) +
-        Math.random().toString(36).substring(2, 15);
-    localStorage.setItem("apiToken", token);
+  // generate a random token
+  token =
+    Math.random().toString(36).substring(2, 15) +
+    Math.random().toString(36).substring(2, 15);
+  localStorage.setItem('apiToken', token);
 }
 
 // Function that adds a new task
 async function handleAdd() {
-    document.getElementById("modal-error-elem")!.innerHTML = "";
+  document.getElementById('modal-error-elem')!.innerHTML = '';
 
-    // take taskTitle from the input field with id="task-title-input"
-    const taskTitle = (document.getElementById("task-title-input") as HTMLInputElement)!.value;
+  // take taskTitle from the input field with id="task-title-input"
+  const taskTitle = (document.getElementById(
+    'task-title-input',
+  ) as HTMLInputElement)!.value;
 
-    if (!taskTitle) {
-      // show an error message if title is missing
-      document.getElementById('modal-error-elem')!.innerHTML =
-        'Title is mandatory';
+  if (!taskTitle) {
+    // show an error message if title is missing
+    document.getElementById('modal-error-elem')!.innerHTML =
+      'Title is mandatory';
+    return;
+  }
+
+  // create a new task with the title and the token from local storage using the SDK
+  TaskService.createTask(token, taskTitle).then((res) => {
+    if (!res.success) {
+      alert(
+        `Unexpected error: ${
+          res.err
+            ? res.err
+            : 'Please check the backend logs in the project dashboard - https://app.genez.io.'
+        }`,
+      );
       return;
     }
-
-    // create a new task with the title and the token from local storage using the SDK
-    TaskService.createTask(
-        token,
-        taskTitle
-    ).then((res) => {
-        if (res.success) {
-            // reload the page
-            location.reload();
-        }
-    });
+    if (res.success) {
+      // reload the page
+      location.reload();
+    }
+  });
 }
 
 // add an event listener to the button with id="add-task-btn"
@@ -52,6 +61,16 @@ document
 
 // iterate over all tasks
 TaskService.getAllTasksByUser(token).then((res) => {
+  if (!res.success) {
+    alert(
+      `Unexpected error: ${
+        res.err
+          ? res.err
+          : 'Please check the backend logs in the project dashboard - https://app.genez.io.'
+      }`,
+    );
+    return;
+  }
   if (res.success) {
     // iterate over all tasks
     for (const task of res.tasks) {
@@ -65,7 +84,7 @@ TaskService.getAllTasksByUser(token).then((res) => {
       // TODO - Genezio Challenge
       // Implement the functionality for the delete button
       // `onclick` should call the TaskServive.deleteTask(token, id) method from the generated SDK
-      const deleteButton = `<button class="btn" onclick="">${DELETE_ICON}</button>`
+      const deleteButton = `<button class="btn" onclick="">${DELETE_ICON}</button>`;
 
       taskContainer.innerHTML += `
         <div class="mb-3">
@@ -102,7 +121,18 @@ TaskService.getAllTasksByUser(token).then((res) => {
         id,
         task!.title,
         (e.target as HTMLInputElement).checked,
-      );
+      ).then((res) => {
+        if (!res.success) {
+          alert(
+            `Unexpected error: ${
+              res.err
+                ? res.err
+                : 'Please check the backend logs in the project dashboard - https://app.genez.io.'
+            }`,
+          );
+          return;
+        }
+      });
     });
   }
 });

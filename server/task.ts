@@ -1,7 +1,10 @@
-import mongoose from "mongoose"
-import { MONGO_DB_URI } from "./helper"
-import { TaskModel } from "./models/task"
-import { GenezioDeploy } from "@genezio/types"
+import mongoose from 'mongoose';
+import { TaskModel } from './models/task';
+import { GenezioDeploy } from '@genezio/types';
+
+const red_color = '\x1b[31m%s\x1b[0m';
+const missing_env_error =
+  'ERROR: Your MONGO_DB_URI environment variable is not properly set, go to https://genez.io/blog/how-to-add-a-mongodb-to-your-genezio-project/ to learn how to integrate your project with Mongo DB';
 
 export type Task = {
   id: string;
@@ -15,19 +18,23 @@ export type Task = {
 export type GetTasksResponse = {
   success: boolean;
   tasks: Task[];
+  err?: string;
 };
 
 export type GetTaskResponse = {
   success: boolean;
   task?: Task;
+  err?: string;
 };
 
 export type UpdateTaskResponse = {
   success: boolean;
+  err?: string;
 };
 
 export type DeleteTaskResponse = {
   success: boolean;
+  err?: string;
 };
 
 /**
@@ -44,7 +51,14 @@ export class TaskService {
    */
   #connect() {
     mongoose.set('strictQuery', false);
-    mongoose.connect(MONGO_DB_URI);
+    if (!process.env.MONGO_DB_URI) {
+      console.log(red_color, missing_env_error);
+      return;
+    }
+    mongoose.connect(process.env.MONGO_DB_URI || '').catch((err) => {
+      console.log(err);
+      throw err;
+    });
   }
 
   /**
@@ -57,6 +71,10 @@ export class TaskService {
    * @returns An object containing two properties: { success: true, tasks: tasks }
    */
   async getAllTasksByUser(token: string): Promise<GetTasksResponse> {
+    if (!process.env.MONGO_DB_URI) {
+      console.log(red_color, missing_env_error);
+      return { success: false, tasks: [], err: missing_env_error };
+    }
     console.log(`Get all tasks by user request received with token ${token}`);
 
     const tasks = (await TaskModel.find({ token: token })).map((task) => {
@@ -117,6 +135,10 @@ export class TaskService {
    * @returns An object containing two properties: { success: true, tasks: tasks }
    */
   async createTask(token: string, title: string): Promise<GetTaskResponse> {
+    if (!process.env.MONGO_DB_URI) {
+      console.log(red_color, missing_env_error);
+      return { success: false, err: missing_env_error };
+    }
     console.log(
       `Create task request received for user with ${token} with title ${title}`,
     );
@@ -158,6 +180,10 @@ export class TaskService {
     title: string,
     solved: boolean,
   ): Promise<UpdateTaskResponse> {
+    if (!process.env.MONGO_DB_URI) {
+      console.log(red_color, missing_env_error);
+      return { success: false, err: missing_env_error };
+    }
     console.log(
       `Update task request received with id ${id} with title ${title} and solved value ${solved}`,
     );
@@ -174,19 +200,23 @@ export class TaskService {
   }
 
   /*
-  * TODO - Genezio Challenge
-  * Implement the following method that deletes a task for a giving user ID.
-  * Only authenticated users with a valid token can access this method.
-  *
-  * The method will be exported via SDK using genezio.
-  *
-  * @param {*} token The user's token.
-  * @param {*} title The tasktitle.
-  * @returns An object containing one property: { success: true }
-  */
-   async deleteTask(token: string, id:string) : Promise<DeleteTaskResponse> {
-     console.log(`Implement this method to delete a user's task with id ${id}`)
+   * TODO - Genezio Challenge
+   * Implement the following method that deletes a task for a giving user ID.
+   * Only authenticated users with a valid token can access this method.
+   *
+   * The method will be exported via SDK using genezio.
+   *
+   * @param {*} token The user's token.
+   * @param {*} title The tasktitle.
+   * @returns An object containing one property: { success: true }
+   */
+  async deleteTask(token: string, id: string): Promise<DeleteTaskResponse> {
+    if (!process.env.MONGO_DB_URI) {
+      console.log(red_color, missing_env_error);
+      return { success: false, err: missing_env_error };
+    }
+    console.log(`Implement this method to delete a user's task with id ${id}`);
 
-      return { success: false }
-   }
+    return { success: false };
+  }
 }
